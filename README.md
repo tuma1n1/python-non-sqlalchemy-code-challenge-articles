@@ -175,3 +175,65 @@ stretch your skills.
     - lines 39-40, and 53-54
   - **magazine_test.py**
     - lines 35-36, 55-56, 59-60, 90-91, and 105-106
+
+
+
+
+class Magazine:
+
+    all = []
+
+    def __init__(self, name, category):
+        self.name = name
+        self.category = category
+        self._articles = []
+        #self._contributors = []
+        
+        Magazine.all.append(self)
+
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+        if isinstance(value, str) and 2 <= len(value) <= 16:
+            self._name = value
+        else:
+            raise ValueError("name must be a string between 2 and 16 characters")
+        
+    @property
+    def category(self):
+        return self._category
+    
+    @category.setter
+    def category(self, value):
+        if not isinstance(value, str) or len(value) == 0:
+            raise TypeError('Category must be a non-empty string.')
+        self._category = value
+
+
+    def articles(self):
+        if not self._articles:
+            return None
+        else:
+            return self._articles
+    
+
+    def contributors(self):
+        return list(set([article.author for article in self._articles]))
+
+
+    def article_titles(self):
+        return [article.title for article in self._articles] or None
+
+
+
+    def contributing_authors(self):
+        author_articles_count = {}
+        for article in self._articles:
+            if article.author in author_articles_count:
+                author_articles_count[article.author] += 1
+            else:
+                author_articles_count[article.author] = 1
+        return [author for author, count in author_articles_count.items() if count > 2] or None
